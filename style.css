@@ -149,17 +149,23 @@ body {
 
 /* About Section */
 
-.about, .menu, .contact {
+.about,
+.menu,
+.contact {
   padding: 10rem 7% 1.4rem;
 }
 
-.about h2, .menu h2, .contact h2 {
+.about h2,
+.menu h2,
+.contact h2 {
   text-align: center;
   font-size: 2.6rem;
   margin-bottom: 3rem;
 }
 
-.about h2 span, .menu h2 span, .contact h2 span {
+.about h2 span,
+.menu h2 span,
+.contact h2 span {
   color: var(--primary);
 }
 
@@ -194,11 +200,13 @@ body {
 
 /* Menu Section */
 
-.menu h2, .contact h2 {
+.menu h2,
+.contact h2 {
   margin-bottom: 1rem;
 }
 
-.menu p , .contact p {
+.menu p,
+.contact p {
   text-align: center;
   max-width: 30rem;
   margin: auto;
@@ -292,7 +300,8 @@ footer .social a {
   margin: 1rem;
 }
 
-footer .social a:hover, footer .links a:hover {
+footer .social a:hover,
+footer .links a:hover {
   color: var(--background);
 }
 
