@@ -9,6 +9,7 @@
 
     <!-- Styling -->
     <link rel="stylesheet" href="style.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -40,7 +41,7 @@
 
     <!-- Home Start -->
     <section class="home" id="home">
-      <main class="content">
+      <main class="content scroll-fade" data-aos="fade-up">
         <h1>Drink Like A <span>Boss</span></h1>
         <p>
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est
@@ -53,12 +54,12 @@
 
     <!-- About Section Start -->
     <section id="about" class="about">
-      <h2><span>Tentang</span> Kami</h2>
+      <h2 class="scroll-fade" data-aos="zoom-in"><span>Tentang</span> Kami</h2>
       <div class="row">
-        <div class="about-img">
+        <div class="about-img scroll-fade" data-aos="fade-right">
           <img src="../img/about.jpg" alt="Tentang Kami" />
         </div>
-        <div class="content">
+        <div class="content scroll-fade" data-aos="fade-left">
           <h3>Kenapa memilih kopi kami?</h3>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque
@@ -80,41 +81,65 @@
     <!-- Menu Section Start -->
 
     <section id="menu" class="menu">
-      <h2><span>Menu</span> Kami</h2>
-      <p>
+      <h2 class="scroll-fade" data-aos="zoom-in"><span>Menu</span> Kami</h2>
+      <p class="scroll-fade" data-aos="fade-up">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
         cupiditate consequuntur earum voluptate quis aut expedita nesciunt
         quisquam dignissimos sit omnis quam accusamus quo aliquam, adipisci
         minima magnam autem quidem.
       </p>
       <div class="row">
-        <div class="menu-card">
-          <img src="img/menu/menu1.jpeg" alt="Esspresso" class="menu-card-img" />
+        <div class="menu-card scroll-fade" data-aos="zoom-in">
+          <img
+            src="img/menu/menu1.jpeg"
+            alt="Esspresso"
+            class="menu-card-img"
+          />
           <h3 class="menu-card-title">>- Espresso -<</h3>
           <p class="menu-card-price">IDR 10K</p>
         </div>
-        <div class="menu-card">
-          <img src="img/menu/menu2.jpeg" alt="Iced Caramel Macchiato Cream" class="menu-card-img" />
+        <div class="menu-card scroll-fade" data-aos="zoom-in">
+          <img
+            src="img/menu/menu2.jpeg"
+            alt="Iced Caramel Macchiato Cream"
+            class="menu-card-img"
+          />
           <h3 class="menu-card-title">>- Iced Caramel Macchiato Cream -<</h3>
           <p class="menu-card-price">IDR 20K</p>
         </div>
-        <div class="menu-card">
-          <img src="img/menu/menu3.jpeg" alt="Tiramisu Latte" class="menu-card-img" />
+        <div class="menu-card scroll-fade" data-aos="zoom-in">
+          <img
+            src="img/menu/menu3.jpeg"
+            alt="Tiramisu Latte"
+            class="menu-card-img"
+          />
           <h3 class="menu-card-title">>- Tiramisu Latte -<</h3>
           <p class="menu-card-price">IDR 15K</p>
         </div>
-        <div class="menu-card">
-          <img src="img/menu/menu4.jpeg" alt="Americano" class="menu-card-img" />
+        <div class="menu-card scroll-fade" data-aos="zoom-in">
+          <img
+            src="img/menu/menu4.jpeg"
+            alt="Americano"
+            class="menu-card-img"
+          />
           <h3 class="menu-card-title">>- Americano -<</h3>
           <p class="menu-card-price">IDR 8K</p>
         </div>
-        <div class="menu-card">
-          <img src="img/menu/menu5.jpeg" alt="Croffle with Cinnamon & Honey" class="menu-card-img" />
+        <div class="menu-card scroll-fade" data-aos="zoom-in">
+          <img
+            src="img/menu/menu5.jpeg"
+            alt="Croffle with Cinnamon & Honey"
+            class="menu-card-img"
+          />
           <h3 class="menu-card-title">>- Croffle with Cinnamon & Honey -<</h3>
           <p class="menu-card-price">IDR 5K</p>
         </div>
-        <div class="menu-card">
-          <img src="img/menu/menu6.jpeg" alt="Mini Sandwich Smoked Beef & Egg" class="menu-card-img" />
+        <div class="menu-card scroll-fade" data-aos="zoom-in">
+          <img
+            src="img/menu/menu6.jpeg"
+            alt="Mini Sandwich Smoked Beef & Egg"
+            class="menu-card-img"
+          />
           <h3 class="menu-card-title">>- Smoked Beef & Egg Sandwich -<</h3>
           <p class="menu-card-price">IDR 7K</p>
         </div>
@@ -126,8 +151,8 @@
     <!-- Contact Section Start -->
 
     <section id="contact" class="contact">
-      <h2><span>Kontak</span> Kami</h2>
-      <p>
+      <h2 class="scroll-fade" data-aos="zoom-in"><span>Kontak</span> Kami</h2>
+      <p class="scroll-fade" data-aos="fade-up">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, deserunt!
       </p>
 
@@ -137,10 +162,11 @@
           allowfullscreen=""
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
-          class="map"
+          class="map scroll-fade"
+          data-aos="fade-right"
         ></iframe>
 
-        <form action="">
+        <form action="" data-aos="fade-left" class="scroll-fade">
           <div class="input-group">
             <i data-feather="user"></i>
             <input type="text" placeholder="nama" />
@@ -160,9 +186,20 @@
 
     <!-- Contact Section End -->
 
+    <!-- Modal Template -->
+
+    <div id="menuModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <img id="modalImage" src="" alt="" />
+        <h3 id="modalTitle"></h3>
+        <p id="modalPrice"></p>
+      </div>
+    </div>
+
     <!-- Footer Start -->
 
-    <footer>
+    <footer class="scroll-fade" data-aos="fade-up">
       <div class="social">
         <a href="#"><i data-feather="instagram"></i></a>
         <a href="#"><i data-feather="twitter"></i></a>
@@ -183,5 +220,6 @@
     <!-- Footer End -->
   </body>
 
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="script.js"></script>
 </html>
