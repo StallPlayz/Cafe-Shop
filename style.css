@@ -228,7 +228,8 @@ body {
 
 .menu .row .menu-card img {
   border-radius: 50%;
-  width: 40%;
+  width: 100%;
+  max-width: 50%;
 }
 
 .menu .row .menu-card .menu-card-title {
