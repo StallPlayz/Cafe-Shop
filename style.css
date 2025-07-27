@@ -521,6 +521,7 @@ footer .credit a {
 
   .about .row {
     flex-wrap: wrap;
+    overflow-x: hidden;
   }
 
   .about .row .about-img img {
@@ -548,6 +549,7 @@ footer .credit a {
 
   .contact .row {
     flex-wrap: wrap;
+    overflow-x: hidden;
   }
 
   .contact .row .map {
