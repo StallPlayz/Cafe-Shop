@@ -29,22 +29,19 @@ scrollFadeElements.forEach((el) => observer.observe(el));
 
 feather.replace();
 
-// Toggle class active
-
-const navigation = document.querySelector(".navigation");
-
-// Hamburger menu clicked
-
-document.querySelector("#hamburger-menu").onclick = () => {
-  navigation.classList.toggle("active");
-};
-
-// Click outside sidebar to close nav
+// Hamburger Menu Functionality
 
 const hamburger = document.querySelector("#hamburger-menu");
+const navigation = document.querySelector(".navigation");
+
+hamburger.addEventListener("click", () => {
+  hamburger.classList.toggle("active");
+  navigation.classList.toggle("active");
+});
 
 document.addEventListener("click", function (e) {
   if (!hamburger.contains(e.target) && !navigation.contains(e.target)) {
+    hamburger.classList.remove("active");
     navigation.classList.remove("active");
   }
 });
