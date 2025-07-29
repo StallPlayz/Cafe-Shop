@@ -47,6 +47,24 @@ input:-webkit-autofill {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  color: #fff;
+}
+
+.theme-toggle:hover {
+  transform: rotate(20deg) scale(1.2);
+}
+
+/* Light mode icon override */
+.light-mode .theme-toggle {
+  color: #111;
+}
+
 /* Light Theme */
 .light-mode {
   --background: #d1d1d1;
@@ -59,6 +77,13 @@ input:-webkit-autofill {
 .light-mode body {
   color: #000;
   background-color: var(--background);
+}
+
+.light-mode input:-webkit-autofill {
+  background-color: var(--background) !important;
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-text-fill-color: #111 !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .light-mode .navbar {
@@ -90,6 +115,10 @@ input:-webkit-autofill {
   color: #000;
 }
 
+.light-mode .home::before {
+  opacity: 0.2;
+}
+
 .light-mode .home::after {
   background: linear-gradient(
     0deg,
@@ -101,6 +130,11 @@ input:-webkit-autofill {
 .light-mode .home .content h1 span {
   color: var(--primary);
   text-shadow: 1px 1px 3px rgba(1, 1, 3, 0.5);
+}
+
+.light-mode .search-bar input {
+  background-color: #fff;
+  color: #111;
 }
 
 .light-mode .menu-container {
@@ -119,6 +153,27 @@ input:-webkit-autofill {
 
 .light-mode .menu .row .menu-card {
   background: linear-gradient(135deg, #ededed, #dddddd);
+}
+
+.light-mode .modal-content {
+  background-color: var(--background);
+  outline: 1px solid var(--primary);
+}
+
+.light-mode .modal-content,
+.light-mode .menu-description {
+  color: #111;
+}
+
+.light-mode .contact .row .input-group input {
+  color: #111;
+}
+
+.light-mode .contact .row .input-group input:-webkit-autofill {
+  background-color: var(--background) !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--background) inset !important;
+  -webkit-text-fill-color: #111 !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .light-mode footer .social a:hover,
@@ -174,6 +229,8 @@ footer .links a:hover {
   opacity: 0;
   transition: all 0.8s ease-out;
   will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* Required animation */
@@ -296,6 +353,17 @@ footer .links a:hover {
   background-size: cover;
   background-position: center;
   position: relative;
+  overflow: hidden;
+}
+
+.home::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+  z-index: 1;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .home::after {
@@ -485,7 +553,7 @@ footer .links a:hover {
   padding: 1rem;
   border: thick solid var(--primary);
   border-radius: 20px;
-  background: var(--background);
+  background: #111;
 }
 
 .menu-scroll {
@@ -524,6 +592,7 @@ footer .links a:hover {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.7);
+  animation: slideFadeIn 0.4s ease;
 }
 
 .modal-content {
@@ -537,6 +606,24 @@ footer .links a:hover {
   color: #fff;
   border-radius: 10px;
   position: relative;
+}
+
+@keyframes slideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.menu-description {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  color: #ccc;
+  line-height: 1.4;
 }
 
 .modal-content img {
@@ -558,7 +645,7 @@ footer .links a:hover {
   color: var(--primary);
 }
 
-/* Search Bar */
+/* Search Bar & Filter Button */
 
 .search-bar {
   text-align: center;
@@ -574,6 +661,28 @@ footer .links a:hover {
   border-radius: 8px;
   background-color: #111;
   color: #fff;
+}
+
+.filter-buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 0.6rem 1.2rem;
+  background-color: var(--primary);
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.filter-btn:hover {
+  background-color: var(--secondary);
 }
 
 /* Contact Section */
@@ -602,7 +711,7 @@ footer .links a:hover {
   margin-top: 2rem;
   background-color: var(--background);
   border: 1px solid #eee;
-  padding-left: 2rem;
+  padding-inline-start: 2rem;
 }
 
 .contact .row form .input-group input {
@@ -611,6 +720,13 @@ footer .links a:hover {
   font-size: 1.7rem;
   background: none;
   color: #fff;
+}
+
+.contact .row form .input-group input:-webkit-autofill {
+  background-color: var(--background) !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--background) inset !important;
+  -webkit-text-fill-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .contact .row form .btn {

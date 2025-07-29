@@ -1,45 +1,48 @@
 // Custom Animation-On-Scroll Script
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("visible");
-      observer.unobserve(entry.target);
-    }
-  });
-}, {
-  threshold: 0.2,
-});
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  },
+  {
+    threshold: 0.2,
+  }
+);
 
 // Watch all animate elements
-document.querySelectorAll('.animate').forEach(el => {
+document.querySelectorAll(".animate").forEach((el) => {
   observer.observe(el);
 });
 
 // Dark/Light mode script
 
 const themeToggle = document.getElementById("theme-toggle");
-const icon = themeToggle.querySelector("i");
 
 function setTheme(theme) {
-  if (theme === "light") {
-    document.documentElement.classList.add("light-mode");
-    icon.setAttribute("data-feather", "moon");
-  } else {
-    document.documentElement.classList.remove("light-mode");
-    icon.setAttribute("data-feather", "sun");
-  }
-  feather.replace(); // update icon
+  const isLight = theme === "light";
+
+  document.documentElement.classList.toggle("light-mode", isLight);
+
+  // Swap emoji/icon
+  themeToggle.textContent = isLight ? "🌙" : "☀️";
+
+  // Save preference
   localStorage.setItem("theme", theme);
 }
 
+// Load on page load
 const savedTheme = localStorage.getItem("theme") || "dark";
 setTheme(savedTheme);
 
-themeToggle.addEventListener("click", (e) => {
-  e.preventDefault();
-  const current = document.documentElement.classList.contains("light-mode") ? "light" : "dark";
-  const newTheme = current === "light" ? "dark" : "light";
-  setTheme(newTheme);
+// Toggle theme on click
+themeToggle.addEventListener("click", () => {
+  const isCurrentlyLight =
+    document.documentElement.classList.contains("light-mode");
+  setTheme(isCurrentlyLight ? "dark" : "light");
 });
 
 // Icons
@@ -62,22 +65,21 @@ document.addEventListener("click", (e) => {
 });
 
 // Toggle navbar transparency based on scroll
+let lastScroll = 0;
 window.addEventListener("scroll", () => {
+  const now = Date.now();
+  if (now - lastScroll < 100) return;
+  lastScroll = now;
+
   const navbar = document.querySelector(".navbar");
   const homeSection = document.querySelector(".home");
-
   const homeHeight = homeSection.offsetHeight;
-  const scrollY = window.scrollY;
 
-  if (scrollY < homeHeight - 100) {
-    navbar.classList.add("transparent");
-  } else {
-    navbar.classList.remove("transparent");
-  }
+  navbar.classList.toggle("transparent", window.scrollY < homeHeight - 100);
 });
 
 // Run on page load
-window.dispatchEvent(new Event('scroll'));
+window.dispatchEvent(new Event("scroll"));
 
 // Menu search filter
 const searchInput = document.getElementById("menuSearchInput");
@@ -93,6 +95,26 @@ if (searchInput) {
   });
 }
 
+document.querySelector(".filter-buttons").addEventListener("click", (e) => {
+  if (e.target.classList.contains("filter-btn")) {
+    const selectedCategory = e.target.dataset.filter;
+    const searchTerm = searchInput.value.toLowerCase();
+
+    document.querySelectorAll(".menu-card").forEach((card) => {
+      const title = card
+        .querySelector(".menu-card-title")
+        .textContent.toLowerCase();
+      const category = card.dataset.category;
+
+      const matchesSearch = title.includes(searchTerm);
+      const matchesCategory =
+        selectedCategory === "all" || category === selectedCategory;
+
+      card.style.display = matchesSearch && matchesCategory ? "block" : "none";
+    });
+  }
+});
+
 // Menu modal handling
 const modal = document.getElementById("menuModal");
 const modalImage = document.getElementById("modalImage");
@@ -102,9 +124,39 @@ const closeButton = document.querySelector(".close-button");
 
 document.querySelectorAll(".menu-card").forEach((card) => {
   card.addEventListener("click", () => {
+    const title = card.querySelector(".menu-card-title").textContent;
+    const descriptions = {
+      Espresso:
+        "A bold and rich shot of coffee, perfect for a quick pick-me-up.",
+      "Iced Caramel Macchiato Cream":
+        "A creamy delight layered with caramel and espresso over ice.",
+      "Tiramisu Latte":
+        "Inspired by the classic dessert, combining coffee and cocoa in harmony.",
+      Americano:
+        "Smooth and simple, hot water blended with espresso for a lighter profile.",
+      "Croffle with Cinnamon & Honey":
+        "Crispy croissant-waffle drizzled with honey and a dash of cinnamon.",
+      "Smoked Beef & Egg Sandwich":
+        "Savory smoked beef paired with a soft egg on artisan bread.",
+      "Truffle Shuffle Fries":
+        "Crispy golden fries drizzled with white truffle oil, topped with parmesan shavings and parsley.",
+      "Carbonara Rustica":
+        "Classic Roman-style carbonara made with crispy pancetta, egg yolk, pecorino romano, and black pepper.",
+      "Cheesy Heat Honey Rings":
+        "Stuffed crispy rings oozing with melted mozzarella, tossed in honey glaze with crushed red pepper flakes.",
+      "Thai Basil Chicken Rolls":
+        "Wok-seared chicken, garlic, and Thai basil wrapped in a crisp golden spring roll shell, served with sweet chili sauce",
+      "Avocado Zen Toast":
+        "Sourdough topped with smashed avocado, poached egg, cherry tomatoes, radish slices, microgreens, and a sprinkle of chili flakes.",
+      "Peach Blossom Oolong":
+        "Lightly floral oolong tea paired with juicy peach nectar and edible flower petals.",
+    };
+
     modalImage.src = card.querySelector("img").src;
-    modalTitle.textContent = card.querySelector(".menu-card-title").textContent;
+    modalTitle.textContent = title;
     modalPrice.textContent = card.querySelector(".menu-card-price").textContent;
+    document.getElementById("modalDesc").textContent =
+      descriptions[title] || "A special item crafted just for you.";
     modal.style.display = "block";
   });
 });
