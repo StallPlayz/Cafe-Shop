@@ -1,5 +1,46 @@
-// Initialize AOS animation
-AOS.init({ duration: 1000, once: true });
+// Custom Animation-On-Scroll Script
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      observer.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.2,
+});
+
+// Watch all animate elements
+document.querySelectorAll('.animate').forEach(el => {
+  observer.observe(el);
+});
+
+// Dark/Light mode script
+
+const themeToggle = document.getElementById("theme-toggle");
+const icon = themeToggle.querySelector("i");
+
+function setTheme(theme) {
+  if (theme === "light") {
+    document.documentElement.classList.add("light-mode");
+    icon.setAttribute("data-feather", "moon");
+  } else {
+    document.documentElement.classList.remove("light-mode");
+    icon.setAttribute("data-feather", "sun");
+  }
+  feather.replace(); // update icon
+  localStorage.setItem("theme", theme);
+}
+
+const savedTheme = localStorage.getItem("theme") || "dark";
+setTheme(savedTheme);
+
+themeToggle.addEventListener("click", (e) => {
+  e.preventDefault();
+  const current = document.documentElement.classList.contains("light-mode") ? "light" : "dark";
+  const newTheme = current === "light" ? "dark" : "light";
+  setTheme(newTheme);
+});
 
 // Icons
 feather.replace();
@@ -19,6 +60,24 @@ document.addEventListener("click", (e) => {
     navigation.classList.remove("active");
   }
 });
+
+// Toggle navbar transparency based on scroll
+window.addEventListener("scroll", () => {
+  const navbar = document.querySelector(".navbar");
+  const homeSection = document.querySelector(".home");
+
+  const homeHeight = homeSection.offsetHeight;
+  const scrollY = window.scrollY;
+
+  if (scrollY < homeHeight - 100) {
+    navbar.classList.add("transparent");
+  } else {
+    navbar.classList.remove("transparent");
+  }
+});
+
+// Run on page load
+window.dispatchEvent(new Event('scroll'));
 
 // Menu search filter
 const searchInput = document.getElementById("menuSearchInput");
@@ -79,20 +138,20 @@ function sendMail() {
   };
 
   $loading.show();
-  $btn.prop("disabled", true).text("Mengirim...");
+  $btn.prop("disabled", true).text("Sending...");
 
   emailjs
     .send("service_0958elr", "template_ncduz2t", parms)
     .then(() => {
-      showToast("Pesan berhasil dikirim!", "success");
+      showToast("Message successfully sent!", "success");
       $form[0].reset();
     })
     .catch(() => {
-      showToast("Gagal mengirim pesan. Silakan coba lagi.", "error");
+      showToast("Can't send your message, please try again!", "error");
     })
     .finally(() => {
       $loading.hide();
-      $btn.prop("disabled", false).text("kirim pesan");
+      $btn.prop("disabled", false).text("Send");
     });
 }
 
