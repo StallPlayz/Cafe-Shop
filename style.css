@@ -108,6 +108,102 @@ input:-webkit-autofill {
   color: var(--primary);
 }
 
+.shopping-cart {
+  position: relative;
+}
+
+.shopping-cart .cart-item-count {
+  position: absolute;
+  top: 0;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+  font-size: 12px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+}
+
+.quantity-select {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.quantity-select input {
+  width: 60px;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.quantity-select button {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary);
+  color: #fff;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.quantity-select button:hover {
+  background-color: var(--secondary);
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.cart-item button.remove-btn {
+  background: red;
+  border: none;
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cart-item input.cart-qty-input {
+  width: 50px;
+  padding: 0.2rem;
+  font-size: 1rem;
+  text-align: center;
+  border: 1px solid var(--primary);
+  background-color: #111;
+  color: #fff;
+  border-radius: 4px;
+}
+
+.cart-summary {
+  text-align: right;
+}
+
+.checkout-btn {
+  margin-top: 1rem;
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.checkout-btn:hover {
+  background-color: var(--secondary);
+}
+
 .light-mode .home {
   background: url("../img/kopi.jpg");
   background-size: cover;

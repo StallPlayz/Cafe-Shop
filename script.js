@@ -13,6 +13,88 @@ const observer = new IntersectionObserver(
   }
 );
 
+// Shopping Cart definition
+
+let shoppingCart = [];
+
+function attachCartButtonListener() {
+  const cartBtn = document.getElementById("cartButton");
+  if (cartBtn) {
+    cartBtn.addEventListener("click", renderShoppingCart);
+  }
+}
+attachCartButtonListener();
+
+window.addEventListener("click", (e) => {
+  const cartModal = document.getElementById("cartModal");
+  if (e.target === cartModal) {
+    cartModal.style.display = "none";
+  }
+});
+
+// Update Cart Dynamically
+
+document.querySelectorAll(".cart-qty-input").forEach((input) => {
+  input.addEventListener("input", (e) => {
+    const index = parseInt(e.target.dataset.index);
+    const newQty = parseInt(e.target.value);
+
+    if (!isNaN(newQty) && newQty > 0) {
+      shoppingCart[index].qty = newQty;
+      saveCartToStorage();
+      updateCartCount();
+      updateCartTotal();
+    }
+  });
+
+  input.addEventListener("blur", (e) => {
+    const index = parseInt(e.target.dataset.index);
+    const currentQty = shoppingCart[index].qty;
+
+    if (parseInt(e.target.value) <= 0 || isNaN(parseInt(e.target.value))) {
+      e.target.value = currentQty;
+      showToast("Quantity must be at least 1", "error");
+    }
+  });
+});
+
+// Shopping Cart Sync Script
+
+function syncCartQuantities() {
+  document.querySelectorAll(".cart-qty-input").forEach((input) => {
+    const index = parseInt(input.dataset.index);
+    const newQty = parseInt(input.value);
+    if (newQty > 0) {
+      shoppingCart[index].qty = newQty;
+    }
+  });
+  saveCartToStorage();
+  updateCartCount();
+  updateCartTotal();
+}
+
+function updateCartTotal() {
+  const total = shoppingCart.reduce((sum, item) => {
+    const price = parseInt(item.price.replace(/[^\d]/g, ""));
+    return sum + item.qty * price;
+  }, 0);
+  const formatted = `IDR ${total.toLocaleString("id-ID")}K`;
+  const cartTotal = document.getElementById("cartTotal");
+  if (cartTotal) cartTotal.textContent = formatted;
+}
+
+// --- Persist shoppingCart with localStorage ---
+
+const savedCart = localStorage.getItem("shoppingCart");
+if (savedCart) {
+  shoppingCart = JSON.parse(savedCart);
+  updateCartCount();
+}
+
+function saveCartToStorage() {
+  localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+}
+
 // Watch all animate elements
 document.querySelectorAll(".animate").forEach((el) => {
   observer.observe(el);
@@ -161,6 +243,33 @@ document.querySelectorAll(".menu-card").forEach((card) => {
   });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  // Attach Add to Cart button
+  const addBtn = document.getElementById("addToCartBtn");
+  if (addBtn) {
+    addBtn.addEventListener("click", () => {
+      const qty = parseInt(document.getElementById("itemQty").value);
+      const title = modalTitle.textContent;
+      const price = modalPrice.textContent;
+
+      if (qty > 0) {
+        const existing = shoppingCart.find((item) => item.title === title);
+        if (existing) {
+          existing.qty += qty;
+          saveCartToStorage();
+        } else {
+          shoppingCart.push({ title, price, qty });
+          saveCartToStorage();
+        }
+        updateCartCount();
+        modal.style.display = "none";
+        showToast(`${title} added to cart!`);
+      } else {
+        showToast("Please enter a valid quantity.", "error");
+      }
+    });
+  }
+});
 closeButton.addEventListener("click", () => (modal.style.display = "none"));
 window.addEventListener("click", (e) => {
   if (e.target === modal) modal.style.display = "none";
@@ -220,3 +329,79 @@ $(document).ready(function () {
     }
   });
 });
+
+// Shopping Cart Function
+
+function updateCartCount() {
+  const countSpan = document.querySelector(".cart-item-count");
+  const totalCount = shoppingCart.reduce((sum, item) => sum + item.qty, 0);
+  countSpan.textContent = totalCount;
+  countSpan.style.visibility = totalCount > 0 ? "visible" : "hidden";
+}
+
+function renderShoppingCart() {
+  const cartModalHtml = `
+    <div id="cartModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" id="closeCartBtn">&times;</span>
+        <h3>Your Shopping Cart</h3>
+        <div id="cartItems"></div>
+        <hr style="margin: 1rem 0;" />
+        <div class="cart-summary">
+          <p><strong>Total:</strong> <span id="cartTotal">IDR 0</span></p>
+          <button id="checkoutBtn" class="checkout-btn">Buy Now</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  if (!document.getElementById("cartModal")) {
+    document.body.insertAdjacentHTML("beforeend", cartModalHtml);
+  }
+
+  const cartItemsContainer = document.getElementById("cartItems");
+  cartItemsContainer.innerHTML = shoppingCart.length
+    ? shoppingCart
+        .map(
+          (item, i) => `
+    <div class="cart-item">
+      <span>${item.title}</span>
+      <input 
+        type="number" 
+        min="1" 
+        value="${item.qty}" 
+        class="cart-qty-input" 
+        data-index="${i}" 
+      />
+      <span>${item.price}</span>
+      <button onclick="removeFromCart(${i})" class="remove-btn">x</button>
+    </div>
+  `
+        )
+
+        .join("")
+    : `<p>Your cart is empty.</p>`;
+
+  updateCartTotal();
+
+  document.getElementById("cartModal").style.display = "block";
+  document.getElementById("closeCartBtn").onclick = () => {
+    syncCartQuantities();
+    document.getElementById("cartModal").style.display = "none";
+  };
+
+  document.getElementById("checkoutBtn").onclick = () => {
+    if (shoppingCart.length === 0) {
+      showToast("Your cart is empty!", "error");
+      return;
+    }
+    showToast("Checkout not implemented yet!", "success");
+  };
+}
+
+function removeFromCart(index) {
+  shoppingCart.splice(index, 1);
+  saveCartToStorage();
+  updateCartCount();
+  renderShoppingCart();
+}
